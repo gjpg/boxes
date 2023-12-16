@@ -10,12 +10,12 @@ const Counter: React.FC<CounterProps> = ({label}) => {
     const [count, setCount] = useState<number>(0);
 
     const handleIncrement = () => {
-        setCount(count + 1);
+        setCount(count + 1, 'increment');
     };
 
     const handleDecrement = () => {
         if (count > 0) {
-            setCount(count - 1);
+            setCount(count - 1, 'decrement');
         }
     };
 

@@ -1,17 +1,16 @@
 // App.tsx
-import React from 'react';
-import ColumnCounter from './ColumnCounter.tsx';
-import RowCounter from './RowCounter.tsx';
-import PlayerCounter from './PlayerCounter.tsx';
+import React, {useState} from 'react';
+import Counter from './Counter.tsx';
+import Players from './Players.tsx';
 
 import './styles.css'; // Import your CSS file
 
 const App: React.FC = () => {
     return (
         <div className="app-container">
-            <RowCounter label={'Rows'}/>
-            <ColumnCounter label={'Columns'}/>
-            <PlayerCounter label={'Players'} />
+            <Counter label={'Rows'} count={rowCount} setCount={setRowCount}/>
+            <Counter label={'Columns'} count={columnCount} setCount={setColumnCount}/>
+            <Players count={playerCount} setCount={setPlayerCount}/>
         </div>
     );
 };
