@@ -42,7 +42,7 @@ const Players: React.FC<PlayerProps> = ({ setCount: setPlayerCount, count: playe
         setPlayerCount(playerCount);
 
         // If count is 10 or more, generate random unique initials
-        if (playerCount >= 9) {
+        if (playerCount >= 10) {
             let newInitials: string;
             do {
                 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -122,7 +122,7 @@ const Players: React.FC<PlayerProps> = ({ setCount: setPlayerCount, count: playe
 
 
             {playerData.map((data, index) => (
-                <div key={index} style={{ marginBottom: '8px' }}>
+                <div className="playerList" key={index} style={{ marginBottom: '8px' }}>
                     <input
                         type="text"
                         value={data.name || ''}
@@ -132,13 +132,15 @@ const Players: React.FC<PlayerProps> = ({ setCount: setPlayerCount, count: playe
                         style={{
                             border: errorIndexes.includes(index) ? '1px solid red' : '1px solid black',
                         }}
+                        className="initialInput"
                     />
                     <input
                         type="color"
                         value={data.color}
                         onChange={(e) => handleColorChange(index, e.target.value)}
+                        className="colourInput"
                     />
-                    <button onClick={() => handleRemovePlayer(index)}>X</button>
+                    <button onClick={() => handleRemovePlayer(index)}>✕</button>
                     {errorIndexes.includes(index) && (
                         <span style={{ color: 'red', marginLeft: '8px' }}>Player initials must be unique</span>
                     )}
