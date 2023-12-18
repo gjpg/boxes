@@ -1,5 +1,5 @@
 // App.tsx
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import Counter from './Counter.tsx';
 import Players from './Players.tsx';
 import {Box} from './Grid.tsx';
