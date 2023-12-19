@@ -1,28 +1,43 @@
-import React, { useState } from 'react';
-import Counter from './Counter.tsx';
+import React from "react";
 
-import './styles.css'; // Import your CSS file
+import "./styles.css"; // Import your CSS file
 
-type Edge = 'above' | 'right' | 'below' | 'left';
+export type Edge = "above" | "right" | "below" | "left";
 export interface Box {
-    selectedEdges: Record<Edge, boolean>;
-    selectableEdges: 'all' | 'none' | Edge;
-    winner?: number;
-    row: number;
-    col: number;
+  selectedEdges: Record<Edge, boolean>;
+  selectableEdges: "all" | "none" | Edge;
+  winner?: number;
+  row: number;
+  col: number;
+  className?: string;
 }
 
 interface BoxCellInterface {
-    box: Box
+  box: Box;
+  neighbours: (b: Box) => Record<Edge, Box>;
+  forceRefresh: () => void;
 }
-const BoxCell: React.FC<BoxCellInterface> = ({box}) => {
+const BoxCell: React.FC<BoxCellInterface> = ({
+  box,
+  neighbours,
+  forceRefresh,
+}) => {
+  const clicked = () => {
+    Object.values(neighbours(box)).forEach((box) => {
+      box.className = box.className ? "" : "selected";
+    });
+    forceRefresh();
+  };
+  return (
+    <td>
+      <button onClick={clicked} className={`content ${box.className || ""}`}>
+        ({box.row}, {box.col})
+      </button>
+    </td>
+  );
+};
 
-return (
-    <td className='box'>({box.row}, {box.col})</td>
-)
-}
-
-export default BoxCell
+export default BoxCell;
 
 // 'board' prop
 // board is an array containing multiple arrays (rows) of 'boxes'

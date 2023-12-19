@@ -52,10 +52,19 @@ max-width: 30px;
   border-right-style: solid;
 }
 
-.box {
+table {
+  width: auto;
+}
+td {
+  width: 50px;
+  position: relative;
+}
+td.content {
+  aspect-ratio: 1 / 1 ;
   border-style: dashed;
+  overflow: hidden;
 }
 
-.table {
-  border-collapse: collapse;
+button.selected {
+  background-color: green;
 }
