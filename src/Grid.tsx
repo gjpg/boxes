@@ -31,6 +31,7 @@ const BoxCell: React.FC<BoxCellInterface> = ({
     // Get mouse coordinates
     const mouseX = event.clientX;
     const mouseY = event.clientY;
+    const target = event.target as HTMLButtonElement;
 
     // Update state with mouse coordinates
     setMouseCoordinates({ x: mouseX, y: mouseY });
@@ -40,7 +41,44 @@ const BoxCell: React.FC<BoxCellInterface> = ({
       box.className = box.className ? "" : "selected";
     });
 
-    // Force refresh after handling the click
+    console.log({ mouseX, mouseY, rect: target.getBoundingClientRect() });
+
+    const { top, left, bottom, right } = target.getBoundingClientRect();
+    const distances = {
+      left: Math.abs(mouseX - left),
+      right: Math.abs(mouseX - right),
+      top: Math.abs(mouseY - top),
+      bottom: Math.abs(mouseY - bottom),
+    };
+    const allEdges = Object.keys(distances) as Edge[];
+
+    const closestEdge = allEdges.reduce(
+      (minKey, key) => {
+        return distances[key] < distances[minKey] ? key : minKey;
+      },
+      Object.keys(distances)[0] as Edge,
+    );
+
+    // Access the property with the smallest value
+    const minDistanceProperty = distances[closestEdge];
+
+    console.log(
+      `The property with the smallest value is ${closestEdge} with a distance of ${minDistanceProperty}`,
+    );
+
+    const n = neighbours(box)[closestEdge];
+
+    console.log(Object.entries(distances));
+    const opposites = {
+      left: "right",
+      right: "left",
+      top: "bottom",
+      bottom: "top",
+    } as const;
+
+    box.selectedEdges[closestEdge] = true;
+    n.selectedEdges[opposites[closestEdge]] = true;
+
     forceRefresh();
   };
 
@@ -55,7 +93,7 @@ const BoxCell: React.FC<BoxCellInterface> = ({
   return (
     <td className={listSelectedEdges.join(" ")}>
       <button onClick={clicked} className={`content ${box.className || ""}`}>
-        ({box.row}, {box.col}){" "}
+        ({box.row}, {box.col})
         {mouseCoordinates.x !== null &&
           mouseCoordinates.y !== null &&
           `(Mouse: ${mouseCoordinates.x}, ${mouseCoordinates.y})`}

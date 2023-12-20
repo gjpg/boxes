@@ -24,7 +24,7 @@ const App: React.FC = () => {
   const [rowCount, setRowCount] = useState<number>(0);
   const [columnCount, setColumnCount] = useState<number>(0);
   const [playerCount, setPlayerCount] = useState<number>(0);
-  const [refresh, setRefresh] = useState<number>(0);
+  const [, setRefresh] = useState<number>(0);
   const forceRefresh = useCallback(() => setRefresh((r) => r + 1), []);
 
   type Neighbours = Record<Edge, Box>;
@@ -34,29 +34,32 @@ const App: React.FC = () => {
     [rowCount, columnCount],
   );
 
-  const neighbours = (b: Box): Neighbours => {
-    const directions: Edge[] = ["above", "right", "below", "left"];
-    const result = {} as Neighbours;
+  const neighbours = useCallback(
+    (b: Box): Neighbours => {
+      const directions: Edge[] = ["top", "right", "bottom", "left"];
+      const result = {} as Neighbours;
 
-    for (const dir of directions) {
-      const newRow = b.row + (dir === "above" ? -1 : dir === "below" ? 1 : 0);
-      const newCol = b.col + (dir === "left" ? -1 : dir === "right" ? 1 : 0);
+      for (const dir of directions) {
+        const newRow = b.row + (dir === "top" ? -1 : dir === "bottom" ? 1 : 0);
+        const newCol = b.col + (dir === "left" ? -1 : dir === "right" ? 1 : 0);
 
-      // Check if the new position is within bounds
-      if (
-        newRow >= 0 &&
-        newRow < rowCount + 2 &&
-        newCol >= 0 &&
-        newCol < columnCount + 2
-      ) {
-        result[dir] = grid[newRow][newCol];
+        // Check if the new position is within bounds
+        if (
+          newRow >= 0 &&
+          newRow < rowCount + 2 &&
+          newCol >= 0 &&
+          newCol < columnCount + 2
+        ) {
+          result[dir] = grid[newRow][newCol];
+        }
       }
-    }
 
-    return result;
-  };
+      return result;
+    },
+    [columnCount, grid, rowCount],
+  );
 
-  const Table = () => {
+  const Table = useCallback(() => {
     return (
       <table>
         {grid.map((row, rowIndex) => (
@@ -73,7 +76,7 @@ const App: React.FC = () => {
         ))}
       </table>
     );
-  };
+  }, [forceRefresh, grid, neighbours]);
 
   return (
     <div>
