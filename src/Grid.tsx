@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import "./styles.css"; // Import your CSS file
 
@@ -22,22 +22,38 @@ const BoxCell: React.FC<BoxCellInterface> = ({
   neighbours,
   forceRefresh,
 }) => {
-  const clicked = () => {
+  const [mouseCoordinates, setMouseCoordinates] = useState<{
+    x: number | null;
+    y: number | null;
+  }>({ x: null, y: null });
+
+  const clicked = (event: React.MouseEvent<HTMLButtonElement>) => {
+    // Get mouse coordinates
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
+
+    // Update state with mouse coordinates
+    setMouseCoordinates({ x: mouseX, y: mouseY });
+
+    // Your existing logic for handling box selection
     Object.values(neighbours(box)).forEach((box) => {
       box.className = box.className ? "" : "selected";
     });
+
+    // Force refresh after handling the click
     forceRefresh();
   };
+
   return (
     <td>
       <button onClick={clicked} className={`content ${box.className || ""}`}>
-        ({box.row}, {box.col})
+        ({box.row}, {box.col}){" "}
+        {mouseCoordinates.x !== null &&
+          mouseCoordinates.y !== null &&
+          `(Mouse: ${mouseCoordinates.x}, ${mouseCoordinates.y})`}
       </button>
     </td>
   );
 };
 
 export default BoxCell;
-
-// 'board' prop
-// board is an array containing multiple arrays (rows) of 'boxes'
