@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./styles.css"; // Import your CSS file
 
-export type Edge = "above" | "right" | "below" | "left";
+export type Edge = "top" | "right" | "bottom" | "left";
 export interface Box {
   selectedEdges: Record<Edge, boolean>;
   selectableEdges: "all" | "none" | Edge;
@@ -44,8 +44,16 @@ const BoxCell: React.FC<BoxCellInterface> = ({
     forceRefresh();
   };
 
+  useEffect(() => {
+    console.log("Mounts");
+    return () => console.log("Unmounts");
+  }, []);
+
+  const listSelectedEdges = Object.entries(box.selectedEdges)
+    .filter(([key, value]) => value)
+    .map(([key, value]) => `${key}-selected`);
   return (
-    <td>
+    <td className={listSelectedEdges.join(" ")}>
       <button onClick={clicked} className={`content ${box.className || ""}`}>
         ({box.row}, {box.col}){" "}
         {mouseCoordinates.x !== null &&

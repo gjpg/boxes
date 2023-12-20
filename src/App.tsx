@@ -14,7 +14,7 @@ const makeGrid = (numRows: number, numCols: number): Box[][] => {
       // this is the box you need to initialise
       row,
       col,
-      selectedEdges: { above: false, right: false, below: false, left: false },
+      selectedEdges: { top: false, right: false, bottom: false, left: false },
       selectableEdges: "all",
     })),
   );
