@@ -61,20 +61,22 @@ const App: React.FC = () => {
 
   const Table = useCallback(() => {
     return (
-      <table>
-        {grid.map((row, rowIndex) => (
-          <tr key={rowIndex}>
-            {row.map((cell, colIndex) => (
-              <BoxCell
-                key={colIndex}
-                box={cell}
-                neighbours={neighbours}
-                forceRefresh={forceRefresh}
-              />
-            ))}
-          </tr>
-        ))}
-      </table>
+      <div className="dynamic-table">
+        <table>
+          {grid.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {row.map((cell, colIndex) => (
+                <BoxCell
+                  key={colIndex}
+                  box={cell}
+                  neighbours={neighbours}
+                  forceRefresh={forceRefresh}
+                />
+              ))}
+            </tr>
+          ))}
+        </table>
+      </div>
     );
   }, [forceRefresh, grid, neighbours]);
 

@@ -88,8 +88,8 @@ const BoxCell: React.FC<BoxCellInterface> = ({
   }, []);
 
   const listSelectedEdges = Object.entries(box.selectedEdges)
-    .filter(([key, value]) => value)
-    .map(([key, value]) => `${key}-selected`);
+    .map(([key, value]) => (value ? `${key}-selected` : `${key}-unselected`))
+    .filter(Boolean);
   return (
     <td className={listSelectedEdges.join(" ")}>
       <button onClick={clicked} className={`content ${box.className || ""}`}>

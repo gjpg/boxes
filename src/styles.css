@@ -52,18 +52,49 @@ max-width: 30px;
   border-right-style: solid;
 }
 
+.top-unselected {
+  border-top-style: dashed;
+
+}
+.left-unselected {
+  border-left-style: dashed;
+
+}
+.right-unselected {
+   border-right-style: dashed;
+
+ }
+.bottom-unselected {
+     border-bottom-style: dashed;
+
+  }
 table {
-  width: auto;
   border-collapse: collapse;
   border-spacing: unset;
+  table-layout: fixed;
+  max-width: 60vw;
+  max-height: 60vw;
 }
-td {
+table.tr{
+  max-height:50px;
+}
+table.td {
+  aspect-ratio: 1 / 1 ;
   width: 50px;
   position: relative;
 }
-td.content {
-  aspect-ratio: 1 / 1 ;
-  border-style: dashed;
-  overflow: hidden;
+
+
+button.content {
+  font-size: 1em !important;
+  aspect-ratio: 1 / 1 !important;
+  max-width: 50px !important;
+  max-height: 50px !important;
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden; /* Hide overflowing text */
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  padding:0px;
 }
+
 
