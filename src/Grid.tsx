@@ -87,9 +87,10 @@ const BoxCell: React.FC<BoxCellInterface> = ({
     return () => console.log("Unmounts");
   }, []);
 
-  const listSelectedEdges = Object.entries(box.selectedEdges)
-    .map(([key, value]) => (value ? `${key}-selected` : `${key}-unselected`))
-    .filter(Boolean);
+  const listSelectedEdges = Object.entries(box.selectedEdges).map(
+    ([key, value]) => (value ? `${key}-selected` : ""),
+  );
+
   return (
     <td className={listSelectedEdges.join(" ")}>
       <button onClick={clicked} className={`content ${box.className || ""}`}>
