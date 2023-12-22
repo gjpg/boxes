@@ -92,14 +92,17 @@ const BoxCell: React.FC<BoxCellInterface> = ({
   );
 
   return (
-    <td className={listSelectedEdges.join(" ")}>
+    <div
+      style={{ aspectRatio: "1/1", marginInline: "auto" }}
+      className={listSelectedEdges.join(" ")}
+    >
       <button onClick={clicked} className={`content ${box.className || ""}`}>
         ({box.row}, {box.col})
         {mouseCoordinates.x !== null &&
           mouseCoordinates.y !== null &&
           `(Mouse: ${mouseCoordinates.x}, ${mouseCoordinates.y})`}
       </button>
-    </td>
+    </div>
   );
 };
 
