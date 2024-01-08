@@ -60,20 +60,43 @@ button.content {
   /*text-overflow: ellipsis;*/
   box-sizing: border-box;
   /*vertical-align: middle;*/
+  outline: none;
+  box-shadow: none;
+  border-width: 0;
 
 }
 
 .dynamic-table {
   display: grid;
   border-collapse: collapse;
+  border-width: 0;
 
 
   & > * {
     border-style: dashed;
-    background-color: cyan;
+    /*background-color: cyan;*/
     border-collapse: collapse;
   }
 }
+
+button:focus {outline: none !important;
+  border: transparent !important;
+
+}
+button:focus-visible {outline: none !important;
+  border: transparent !important;
+}
+button:active {outline: none !important;
+  border: transparent !important;
+}
+button:hover {
+  background-color: #213547;
+  border: transparent !important;
+  outline: none !important;
+}
+
+
+
 
 /*Giant gap between columns*/
 /*Border collapse ignored*/

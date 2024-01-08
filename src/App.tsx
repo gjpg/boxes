@@ -21,8 +21,8 @@ const makeGrid = (numRows: number, numCols: number): Box[][] => {
 };
 
 const App: React.FC = () => {
-  const [rowCount, setRowCount] = useState<number>(0);
-  const [columnCount, setColumnCount] = useState<number>(0);
+  const [rowCount, setRowCount] = useState<number>(3);
+  const [columnCount, setColumnCount] = useState<number>(3);
   const [playerCount, setPlayerCount] = useState<number>(0);
   const [, setRefresh] = useState<number>(0);
   const forceRefresh = useCallback(() => setRefresh((r) => r + 1), []);

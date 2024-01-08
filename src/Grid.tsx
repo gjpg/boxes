@@ -97,10 +97,9 @@ const BoxCell: React.FC<BoxCellInterface> = ({
       className={listSelectedEdges.join(" ")}
     >
       <button onClick={clicked} className={`content ${box.className || ""}`}>
-        ({box.row}, {box.col})
-        {mouseCoordinates.x !== null &&
-          mouseCoordinates.y !== null &&
-          `(Mouse: ${mouseCoordinates.x}, ${mouseCoordinates.y})`}
+        ({box.row}, {box.col}){/*{mouseCoordinates.x !== null &&*/}
+        {/*  mouseCoordinates.y !== null &&*/}
+        {/*  `(Mouse: ${mouseCoordinates.x}, ${mouseCoordinates.y})`}*/}
       </button>
     </div>
   );
