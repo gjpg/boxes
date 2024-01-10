@@ -5,7 +5,7 @@ import "./styles.css"; // Import your CSS file
 export type Edge = "top" | "right" | "bottom" | "left";
 export interface Box {
   selectedEdges: Record<Edge, boolean>;
-  selectableEdges: "all" | "none" | Edge;
+  selectableEdges: Record<Edge, boolean>;
   winner?: number;
   row: number;
   col: number;
@@ -78,14 +78,16 @@ const BoxCell: React.FC<BoxCellInterface> = ({
 
     box.selectedEdges[closestEdge] = true;
     n.selectedEdges[opposites[closestEdge]] = true;
+    // box.selectedEdges[].filter(Boolean).length = 4 ? box.winner = turn % playerCount : box.winner = undefined;
+    // n.selectedEdges[].filter(Boolean).length = 4 ? n.winner = turn % playerCount : n.winner = undefined;
 
     forceRefresh();
   };
 
-  useEffect(() => {
-    console.log("Mounts");
-    return () => console.log("Unmounts");
-  }, []);
+  // useEffect(() => {
+  //   console.log("Mounts");
+  //   return () => console.log("Unmounts");
+  // }, []);
 
   const listSelectedEdges = Object.entries(box.selectedEdges).map(
     ([key, value]) => (value ? `${key}-selected` : ""),

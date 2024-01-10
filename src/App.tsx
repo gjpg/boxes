@@ -15,7 +15,15 @@ const makeGrid = (numRows: number, numCols: number): Box[][] => {
       row,
       col,
       selectedEdges: { top: false, right: false, bottom: false, left: false },
-      selectableEdges: "all",
+      selectableEdges: {
+        bottom: row < numRows + 1 && 0 < col && col < numCols + 1,
+
+        top: row > 0 && 0 < col && col < numCols + 1,
+
+        left: col > 0 && 0 < row && row < numRows + 1,
+
+        right: row > 0 && row < numRows + 1 && col < numCols + 1,
+      },
     })),
   );
 };
@@ -59,6 +67,24 @@ const App: React.FC = () => {
     [columnCount, grid, rowCount],
   );
 
+  const countSelectedEdges = () => {
+    let selectedEdgesCount = 0;
+
+    // Iterate through rows and boxes
+    grid.forEach((row) => {
+      row.forEach((box) => {
+        // Sum up the selected edges
+        selectedEdgesCount += Object.values(box.selectedEdges).filter(
+          Boolean,
+        ).length;
+      });
+    });
+
+    return selectedEdgesCount;
+  };
+
+  const totalSelectedEdges = countSelectedEdges() / 2;
+
   const Table = useCallback(() => {
     return (
       <div
@@ -99,6 +125,7 @@ const App: React.FC = () => {
       <div>
         <Table />
       </div>
+      <div> turn={totalSelectedEdges} </div>
       <pre>{JSON.stringify(grid, null, 4)}</pre>
     </div>
   );
