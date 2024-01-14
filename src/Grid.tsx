@@ -15,7 +15,9 @@ export interface Box {
 interface BoxCellInterface {
   box: Box;
   neighbours: (b: Box) => Record<Edge, Box>;
+  turnComplete: () => void;
   forceRefresh: () => void;
+  currentPlayer: number;
 }
 const BoxCell: React.FC<BoxCellInterface> = ({
   box,

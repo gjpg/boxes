@@ -103,21 +103,34 @@ const App: React.FC = () => {
           gridTemplateRows: `repeat(${rowCount + 2},1fr)`,
         }}
       >
-        {grid.map((row, rowIndex) => (
+        {grid.map((row) => (
           <>
             {row.map((cell, colIndex) => (
               <BoxCell
                 key={colIndex}
                 box={cell}
                 neighbours={neighbours}
+                turnComplete={() => {
+                  setCurrentPlayer((currentPlayer + 1) % playerCount);
+                  forceRefresh();
+                }}
                 forceRefresh={forceRefresh}
+                currentPlayer={currentPlayer}
               />
             ))}
           </>
         ))}
       </div>
     );
-  }, [forceRefresh, grid, neighbours]);
+  }, [
+    columnCount,
+    rowCount,
+    grid,
+    neighbours,
+    forceRefresh,
+    currentPlayer,
+    playerCount,
+  ]);
 
   return (
     <div>
@@ -128,7 +141,12 @@ const App: React.FC = () => {
           count={columnCount}
           setCount={setColumnCount}
         />
-        <Players count={playerCount} setCount={setPlayerCount} />
+        <Players
+          count={playerCount}
+          setCount={setPlayerCount}
+          playerData={playerData}
+          setPlayerData={setPlayerData}
+        />
       </div>
       <div>
         <Table />
