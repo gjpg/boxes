@@ -5,6 +5,7 @@
   text-align: center;
 }
 
+
 .app-container {
   position: absolute;
   top: 10px;
@@ -52,6 +53,18 @@ max-width: 30px;
   border-right-style: solid !important;
 }
 
+.right-selectable{
+  border-right-style: dashed;
+}
+.top-selectable{
+  border-top-style: dashed;
+}
+.left-selectable{
+  border-left-style: dashed;
+}
+.bottom-selectable{
+  border-bottom-style: dashed;
+}
 button.content {
   min-width: 100%;
   min-height: 100%;
@@ -73,7 +86,6 @@ button.content {
 
 
   & > * {
-    border-style: dashed;
     /*background-color: cyan;*/
     border-collapse: collapse;
   }
@@ -92,13 +104,16 @@ button:focus {outline: none !important;
 }
 
 button:hover {
-  background-color: #213547;
+opacity: 50%;
   outline: none !important;
   border: 1px transparent !important;
 
 
 }
 
+pre {
+  text-align: left;
+}
 
 
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import "./styles.css"; // Import your CSS file
 
@@ -20,7 +20,9 @@ interface BoxCellInterface {
 const BoxCell: React.FC<BoxCellInterface> = ({
   box,
   neighbours,
+  turnComplete,
   forceRefresh,
+  currentPlayer,
 }) => {
   const [mouseCoordinates, setMouseCoordinates] = useState<{
     x: number | null;
@@ -76,35 +78,63 @@ const BoxCell: React.FC<BoxCellInterface> = ({
       bottom: "top",
     } as const;
 
-    box.selectedEdges[closestEdge] = true;
-    n.selectedEdges[opposites[closestEdge]] = true;
-    // box.selectedEdges[].filter(Boolean).length = 4 ? box.winner = turn % playerCount : box.winner = undefined;
-    // n.selectedEdges[].filter(Boolean).length = 4 ? n.winner = turn % playerCount : n.winner = undefined;
+    if (!box.selectableEdges[closestEdge]) {
+      return;
+    }
 
-    forceRefresh();
+    // function that:
+    // - set the selectedEdge
+    // - checks if the box has been won
+    // - if the box has been won set the winner
+    // - if the box has been won return true
+
+    function selectEdgeAndCheckIfWon(b: Box, edge: Edge) {
+      b.selectedEdges[edge] = true;
+      // if there are any remaining unselected edges
+      if (Object.values(b.selectedEdges).some((edge) => !edge)) {
+        return false;
+      }
+
+      console.log(">>> Box won", currentPlayer);
+      b.winner = currentPlayer;
+      return true;
+    }
+
+    const wonBox = selectEdgeAndCheckIfWon(box, closestEdge);
+    const wonNeighbour = selectEdgeAndCheckIfWon(n, opposites[closestEdge]);
+
+    if (wonBox || wonNeighbour) {
+      forceRefresh();
+      return;
+    }
+
+    turnComplete();
   };
-
-  // useEffect(() => {
-  //   console.log("Mounts");
-  //   return () => console.log("Unmounts");
-  // }, []);
 
   const listSelectedEdges = Object.entries(box.selectedEdges).map(
     ([key, value]) => (value ? `${key}-selected` : ""),
   );
 
-  return (
-    <div
-      style={{ aspectRatio: "1/1", marginInline: "auto" }}
-      className={listSelectedEdges.join(" ")}
-    >
-      <button onClick={clicked} className={`content ${box.className || ""}`}>
-        ({box.row}, {box.col}){/*{mouseCoordinates.x !== null &&*/}
-        {/*  mouseCoordinates.y !== null &&*/}
-        {/*  `(Mouse: ${mouseCoordinates.x}, ${mouseCoordinates.y})`}*/}
-      </button>
-    </div>
+  const listSelectableEdges = Object.entries(box.selectableEdges).map(
+    ([key, value]) => (value ? `${key}-selectable` : ""),
   );
+
+  if (Object.entries(box.selectedEdges))
+    return (
+      <div
+        style={{ aspectRatio: "1/1", marginInline: "auto" }}
+        className={`${listSelectedEdges.join(" ")} ${listSelectableEdges.join(
+          " ",
+        )}`}
+      >
+        <button onClick={clicked} className={`content ${box.className || ""}`}>
+          {/*({box.row}, {box.col})/!*{mouseCoordinates.x !== null &&*!/*/}
+          {box.winner}
+          {/*  mouseCoordinates.y !== null &&*/}
+          {/*  `(Mouse: ${mouseCoordinates.x}, ${mouseCoordinates.y})`}*/}
+        </button>
+      </div>
+    );
 };
 
 export default BoxCell;

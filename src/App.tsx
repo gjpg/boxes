@@ -4,8 +4,10 @@ import Counter from "./Counter.tsx";
 import Players from "./Players.tsx";
 import { Box, Edge } from "./Grid.tsx";
 import BoxCell from "./Grid.tsx";
+import { PlayerData } from "./Players.tsx";
 
 import "./styles.css";
+import players from "./Players.tsx";
 
 const makeGrid = (numRows: number, numCols: number): Box[][] => {
   console.log("Calling makeGrid");
@@ -16,13 +18,13 @@ const makeGrid = (numRows: number, numCols: number): Box[][] => {
       col,
       selectedEdges: { top: false, right: false, bottom: false, left: false },
       selectableEdges: {
-        bottom: row < numRows + 1 && 0 < col && col < numCols + 1,
+        bottom: row < numRows - 1 && 0 < col && col < numCols - 1,
 
-        top: row > 0 && 0 < col && col < numCols + 1,
+        top: row > 0 && 0 < col && col < numCols - 1,
 
-        left: col > 0 && 0 < row && row < numRows + 1,
+        left: col > 0 && 0 < row && row < numRows - 1,
 
-        right: row > 0 && row < numRows + 1 && col < numCols + 1,
+        right: row > 0 && row < numRows - 1 && col < numCols - 1,
       },
     })),
   );
@@ -31,9 +33,11 @@ const makeGrid = (numRows: number, numCols: number): Box[][] => {
 const App: React.FC = () => {
   const [rowCount, setRowCount] = useState<number>(3);
   const [columnCount, setColumnCount] = useState<number>(3);
-  const [playerCount, setPlayerCount] = useState<number>(0);
+  const [playerCount, setPlayerCount] = useState<number>(2);
+  const [playerData, setPlayerData] = useState<PlayerData[]>([]);
   const [, setRefresh] = useState<number>(0);
   const forceRefresh = useCallback(() => setRefresh((r) => r + 1), []);
+  const [currentPlayer, setCurrentPlayer] = useState<number>(0);
 
   type Neighbours = Record<Edge, Box>;
 
@@ -85,6 +89,10 @@ const App: React.FC = () => {
 
   const totalSelectedEdges = countSelectedEdges() / 2;
 
+  console.log("playerData", playerData);
+
+  const turnColour = playerData[totalSelectedEdges % playerCount]?.color;
+
   const Table = useCallback(() => {
     return (
       <div
@@ -125,8 +133,11 @@ const App: React.FC = () => {
       <div>
         <Table />
       </div>
-      <div> turn={totalSelectedEdges} </div>
-      <pre>{JSON.stringify(grid, null, 4)}</pre>
+      <div style={{ color: turnColour }}>
+        {" "}
+        Turn {totalSelectedEdges + 1}, {playerData[currentPlayer]?.name}'s turn
+      </div>
+      <pre className="pre">{JSON.stringify(grid, null, 4)}</pre>
     </div>
   );
 };
