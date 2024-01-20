@@ -96,7 +96,7 @@ const BoxCell: React.FC<BoxCellInterface> = ({
     function copy(x) {
       return JSON.parse(JSON.stringify(x));
     }
-    let wasEdgeAlreadySelected = copy(box.selectedEdges[closestEdge]);
+    const wasEdgeAlreadySelected = copy(box.selectedEdges[closestEdge]);
     console.log(wasEdgeAlreadySelected);
 
     function selectEdgeAndCheckIfWon(b: Box, edge: Edge) {
