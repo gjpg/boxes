@@ -7,9 +7,10 @@ import play = Simulate.play;
 export interface PlayerData {
   name: string;
   color: string;
+  wonBoxes: number;
 }
 
-interface PlayerProps {
+export interface PlayerProps {
   count: number;
   setCount: (count: number) => void;
   playerData: PlayerData[];

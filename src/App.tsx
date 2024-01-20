@@ -6,7 +6,6 @@ import { Box, Edge } from "./Grid.tsx";
 import BoxCell from "./Grid.tsx";
 import { PlayerData } from "./Players.tsx";
 
-import "./styles.css";
 import players from "./Players.tsx";
 
 const makeGrid = (numRows: number, numCols: number): Box[][] => {
@@ -35,6 +34,7 @@ const App: React.FC = () => {
   const [columnCount, setColumnCount] = useState<number>(3);
   const [playerCount, setPlayerCount] = useState<number>(2);
   const [playerData, setPlayerData] = useState<PlayerData[]>([]);
+
   const [, setRefresh] = useState<number>(0);
   const forceRefresh = useCallback(() => setRefresh((r) => r + 1), []);
   const [currentPlayer, setCurrentPlayer] = useState<number>(0);
@@ -87,11 +87,27 @@ const App: React.FC = () => {
     return selectedEdgesCount;
   };
 
+  const tallyBoxWinners = () => {
+    grid.forEach((row) => {
+      row.forEach((box) => {
+        if (box.winner) {
+          if (playerData[box.winner].wonBoxes) {
+            playerData[box.winner].wonBoxes++;
+          } else playerData[box.winner].wonBoxes = 1;
+        }
+      });
+    });
+  };
+
+  tallyBoxWinners();
+
+  const ScoreDisplay = useCallback(() => {
+    return <div>{pla}</div>;
+  }, []);
+
   const totalSelectedEdges = countSelectedEdges() / 2;
 
   console.log("playerData", playerData);
-
-  const turnColour = playerData[totalSelectedEdges % playerCount]?.color;
 
   const Table = useCallback(() => {
     return (
@@ -116,6 +132,7 @@ const App: React.FC = () => {
                 }}
                 forceRefresh={forceRefresh}
                 currentPlayer={currentPlayer}
+                playerData={playerData}
               />
             ))}
           </>
@@ -130,6 +147,7 @@ const App: React.FC = () => {
     forceRefresh,
     currentPlayer,
     playerCount,
+    playerData,
   ]);
 
   return (
@@ -151,10 +169,11 @@ const App: React.FC = () => {
       <div>
         <Table />
       </div>
-      <div style={{ color: turnColour }}>
+      <div style={{ color: playerData[currentPlayer]?.color }}>
         {" "}
         Turn {totalSelectedEdges + 1}, {playerData[currentPlayer]?.name}'s turn
       </div>
+
       <pre className="pre">{JSON.stringify(grid, null, 4)}</pre>
     </div>
   );

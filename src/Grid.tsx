@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { PlayerData } from "./Players.tsx";
 
 import "./styles.css"; // Import your CSS file
 
@@ -18,6 +19,7 @@ interface BoxCellInterface {
   turnComplete: () => void;
   forceRefresh: () => void;
   currentPlayer: number;
+  playerData: PlayerData[];
 }
 const BoxCell: React.FC<BoxCellInterface> = ({
   box,
@@ -25,6 +27,7 @@ const BoxCell: React.FC<BoxCellInterface> = ({
   turnComplete,
   forceRefresh,
   currentPlayer,
+  playerData,
 }) => {
   const [mouseCoordinates, setMouseCoordinates] = useState<{
     x: number | null;
@@ -90,16 +93,24 @@ const BoxCell: React.FC<BoxCellInterface> = ({
     // - if the box has been won set the winner
     // - if the box has been won return true
 
-    function selectEdgeAndCheckIfWon(b: Box, edge: Edge) {
-      b.selectedEdges[edge] = true;
-      // if there are any remaining unselected edges
-      if (Object.values(b.selectedEdges).some((edge) => !edge)) {
-        return false;
-      }
+    function copy(x) {
+      return JSON.parse(JSON.stringify(x));
+    }
+    let wasEdgeAlreadySelected = copy(box.selectedEdges[closestEdge]);
+    console.log(wasEdgeAlreadySelected);
 
-      console.log(">>> Box won", currentPlayer);
-      b.winner = currentPlayer;
-      return true;
+    function selectEdgeAndCheckIfWon(b: Box, edge: Edge) {
+      if (!b.selectedEdges[closestEdge]) {
+        b.selectedEdges[edge] = true;
+        // if there are any remaining unselected edges
+        if (Object.values(b.selectedEdges).some((edge) => !edge)) {
+          return false;
+        }
+
+        console.log(">>> Box won", currentPlayer);
+        b.winner = currentPlayer;
+        return true;
+      }
     }
 
     const wonBox = selectEdgeAndCheckIfWon(box, closestEdge);
@@ -109,8 +120,9 @@ const BoxCell: React.FC<BoxCellInterface> = ({
       forceRefresh();
       return;
     }
-
-    turnComplete();
+    if (!wasEdgeAlreadySelected) {
+      turnComplete();
+    }
   };
 
   const listSelectedEdges = Object.entries(box.selectedEdges).map(
@@ -129,9 +141,13 @@ const BoxCell: React.FC<BoxCellInterface> = ({
           " ",
         )}`}
       >
-        <button onClick={clicked} className={`content ${box.className || ""}`}>
+        <button
+          style={{ color: playerData[box.winner]?.color }}
+          onClick={clicked}
+          className={`content ${box.className || ""}`}
+        >
           {/*({box.row}, {box.col})/!*{mouseCoordinates.x !== null &&*!/*/}
-          {box.winner}
+          {playerData[box.winner]?.name}
           {/*  mouseCoordinates.y !== null &&*/}
           {/*  `(Mouse: ${mouseCoordinates.x}, ${mouseCoordinates.y})`}*/}
         </button>
