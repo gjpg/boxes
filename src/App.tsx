@@ -87,27 +87,18 @@ const App: React.FC = () => {
     return selectedEdgesCount;
   };
 
-  const tallyBoxWinners = () => {
-    grid.forEach((row) => {
-      row.forEach((box) => {
-        if (box.winner) {
-          if (playerData[box.winner].wonBoxes) {
-            playerData[box.winner].wonBoxes++;
-          } else playerData[box.winner].wonBoxes = 1;
-        }
-      });
-    });
-  };
-
-  tallyBoxWinners();
-
-  const ScoreDisplay = useCallback(() => {
-    return <div>{pla}</div>;
-  }, []);
-
   const totalSelectedEdges = countSelectedEdges() / 2;
 
   console.log("playerData", playerData);
+
+  const totalWonBoxes = playerData.reduce(
+    (total, player) => total + player.wonBoxes,
+    0,
+  );
+
+  const numberOfPlayableBoxes = rowCount * columnCount;
+
+  const remainingBoxes = numberOfPlayableBoxes - totalWonBoxes;
 
   const Table = useCallback(() => {
     return (
@@ -173,6 +164,7 @@ const App: React.FC = () => {
         {" "}
         Turn {totalSelectedEdges + 1}, {playerData[currentPlayer]?.name}'s turn
       </div>
+      <div>Remaining boxes: {remainingBoxes}</div>
 
       <pre className="pre">{JSON.stringify(grid, null, 4)}</pre>
     </div>

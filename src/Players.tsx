@@ -160,11 +160,11 @@ const Players: React.FC<PlayerProps> = ({
         setCount={playerCountChanges}
       />
 
-      {playerData.map((data, index) => (
+      {playerData.map((player, index) => (
         <div className="playerList" key={index} style={{ marginBottom: "8px" }}>
           <input
             type="text"
-            value={data.name || ""}
+            value={player.name || ""}
             maxLength={2}
             onChange={(e) => handleInputChange(index, e.target.value)}
             onBlur={() => handleBlur(index)}
@@ -177,7 +177,7 @@ const Players: React.FC<PlayerProps> = ({
           />
           <input
             type="color"
-            value={data.color}
+            value={player.color}
             onChange={(e) => handleColorChange(index, e.target.value)}
             className="colourInput"
           />

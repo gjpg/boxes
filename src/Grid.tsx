@@ -109,6 +109,7 @@ const BoxCell: React.FC<BoxCellInterface> = ({
 
         console.log(">>> Box won", currentPlayer);
         b.winner = currentPlayer;
+        playerData[b.winner].wonBoxes++;
         return true;
       }
 
