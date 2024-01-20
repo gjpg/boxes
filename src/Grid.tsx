@@ -100,7 +100,7 @@ const BoxCell: React.FC<BoxCellInterface> = ({
     console.log(wasEdgeAlreadySelected);
 
     function selectEdgeAndCheckIfWon(b: Box, edge: Edge) {
-      if (!b.selectedEdges[closestEdge]) {
+      if (!b.selectedEdges[edge]) {
         b.selectedEdges[edge] = true;
         // if there are any remaining unselected edges
         if (Object.values(b.selectedEdges).some((edge) => !edge)) {
@@ -111,6 +111,8 @@ const BoxCell: React.FC<BoxCellInterface> = ({
         b.winner = currentPlayer;
         return true;
       }
+
+      return false;
     }
 
     const wonBox = selectEdgeAndCheckIfWon(box, closestEdge);
