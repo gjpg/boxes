@@ -73,7 +73,7 @@ const Players: React.FC<PlayerProps> = ({
     setPlayerCount(playerCount);
     setPlayerData([
       ...playerData,
-      { name: generateName(), color: generateRandomColor() },
+      { name: generateName(), color: generateRandomColor(), wonBoxes: 0 },
     ]);
   };
 
@@ -82,7 +82,7 @@ const Players: React.FC<PlayerProps> = ({
   if (playerData.length < playerCount) {
     setPlayerData([
       ...playerData,
-      { name: generateName(), color: generateRandomColor() },
+      { name: generateName(), color: generateRandomColor(), wonBoxes: 0 },
     ]);
   }
 
@@ -182,6 +182,7 @@ const Players: React.FC<PlayerProps> = ({
             className="colourInput"
           />
           <button onClick={() => handleRemovePlayer(index)}>✕</button>
+          <span style={{ color: player.color }}>Score={player.wonBoxes}</span>
           {errorIndexes.includes(index) && (
             <span style={{ color: "red", marginLeft: "8px" }}>
               Player initials must be unique
